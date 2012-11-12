@@ -31,8 +31,6 @@ module Spree
         render_order_form
       end
 
-      end
-
       private
         def render_order_form
           respond_with(@line_item) do |format|
