@@ -375,7 +375,7 @@ describe Spree::Order do
       persisted_order.state = 'delivery'
     end
 
-    it "transitions from delivery to payment" do
+    pending "transitions from delivery to payment" do
       persisted_order.shipping_method = shipping_method
       persisted_order.next!
       persisted_order.state.should == "payment"
