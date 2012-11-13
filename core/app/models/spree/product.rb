@@ -242,6 +242,11 @@ module Spree
       Spree::Money.new(price).to_s
     end
 
+    def possible_promotions
+      promotion_ids = promotion_rules.map(&:activator_id).uniq
+      Spree::Promotion.advertised.where(:id => promotion_ids).reject(&:expired?)
+    end
+
     private
 
       # Builds variants from a hash of option types & values
