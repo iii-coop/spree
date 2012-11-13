@@ -22,7 +22,7 @@ describe "Promotion Adjustments" do
       click_link "New Promotion"
     end
 
-    let!(:address) { create(:address, :state => Spree::State.first) }
+    let!(:address) { create(:address, :state => create(:state)) }
 
     it "should properly populate Spree::Product#possible_promotions" do
       promotion = create_per_product_promotion 'RoR Mug', 5.0
