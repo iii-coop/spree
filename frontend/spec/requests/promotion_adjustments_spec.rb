@@ -10,7 +10,7 @@ describe "Promotion Adjustments" do
       # creates a check payment method so we don't need to worry about cc details
       create(:payment_method)
 
-      sm = create(:shipping_method, :zone => Spree::Zone.find_by_name('North America'))
+      sm = create(:shipping_method, :zone => create(:zone))
       sm.calculator.set_preference(:amount, 10)
 
       user = create(:admin_user)
