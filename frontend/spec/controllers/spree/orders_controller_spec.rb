@@ -94,8 +94,8 @@ describe Spree::OrdersController do
 
     it "and informs of invalidity" do
       controller.should_not_receive(:fire_event).
-                 with('spree.checkout.coupon_code_added', hash_including(:coupon_code => invalid_coupon_code))
-      spree_put :update, :order => { :coupon_code => invalid_coupon_code }
+                 with('spree.checkout.coupon_code_added', hash_including(:coupon_code => 12345))
+      spree_put :update, :order => { :coupon_code => 12345 }
       flash[:error].should == I18n.t(:coupon_code_not_found)
       response.should render_template :edit
     end
