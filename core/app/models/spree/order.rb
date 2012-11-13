@@ -25,7 +25,9 @@ module Spree
 
     attr_accessible :line_items, :bill_address_attributes, :ship_address_attributes, :payments_attributes,
                     :ship_address, :bill_address, :line_items_attributes, :number,
-                    :shipping_method_id, :email, :use_billing, :special_instructions
+                    :shipping_method_id, :email, :use_billing, :special_instructions, :coupon_code
+
+    attr_reader :coupon_code
 
     if Spree.user_class
       belongs_to :user, :class_name => Spree.user_class.to_s
@@ -478,6 +480,10 @@ module Spree
           :user_id        => self.user_id
         }, :without_protection => true)
       end
+    end
+
+    def coupon_code=(code)
+      @coupon_code = code.strip.downcase rescue nil
     end
 
     private

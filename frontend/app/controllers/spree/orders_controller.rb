@@ -15,6 +15,7 @@ module Spree
     def update
       @order = current_order
       if @order.update_attributes(params[:order])
+        render :edit and return unless apply_coupon_code
         @order.line_items = @order.line_items.select {|li| li.quantity > 0 }
         fire_event('spree.order.contents_changed')
         respond_with(@order) do |format|
@@ -31,7 +32,6 @@ module Spree
         respond_with(@order)
       end
     end
-
 
     # Shows the current incomplete order from the session
     def edit
