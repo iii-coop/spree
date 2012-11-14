@@ -74,6 +74,11 @@ module Spree
           Spree::Promotion::Rules::FirstOrder,
           Spree::Promotion::Rules::UserLoggedIn]
       end
+
+      initializer 'spree.promo.register.promotions.actions' do |app|
+        app.config.spree.promotions.actions = [Spree::Promotion::Actions::CreateAdjustment,
+          Spree::Promotion::Actions::CreateLineItems]
+      end
     end
   end
 end
