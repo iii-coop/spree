@@ -76,6 +76,8 @@ describe Spree::OrdersController do
   end
 
   context "does not apply invalid coupon code" do
+    let(:persisted_order) { create(:order) }
+
     let(:promotion) do
       Spree::Promotion.create({
         :name => "TestPromo",
@@ -89,7 +91,7 @@ describe Spree::OrdersController do
 
     before do
       controller.stub :current_user => user
-      controller.stub :current_order => order
+      controller.stub :current_order => persisted_order
     end
 
     it "and informs of invalidity" do
