@@ -1,11 +1,8 @@
 require 'spec_helper'
 
 describe "Checkout" do
-  let(:country) { create(:country, :name => "Kangaland",:states_required => true) }
-  before do
-    create(:state, :name => "Victoria", :country => country)
-  end
-  let(:promotion) { create_per_order_coupon_promotion 1, 2, 'onetwo' }
+  let!(:country) { create(:country, :name => "Kangaland",:states_required => true) }
+  let!(:state) { create(:state, :name => "Victoria", :country => country) }
 
   context "visitor makes checkout as guest without registration" do
     before(:each) do
