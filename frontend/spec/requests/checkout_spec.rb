@@ -145,10 +145,15 @@ describe "Checkout" do
           page.should_not have_content("undefined method `promotion'")
         end
       end
+    end
 
+    context "promotions", :js => true do
       # OrdersController
       context "on the payment page" do
         before do
+          visit spree.root_path
+          click_link "RoR Mug"
+          click_button "add-to-cart-button"
           click_button "Checkout"
           fill_in "order_email", :with => "spree@example.com"
           click_button "Continue"
@@ -158,8 +163,8 @@ describe "Checkout" do
           fill_in "Street Address", :with => "1 John Street"
           fill_in "City", :with => "City of John"
           fill_in "Zip", :with => "01337"
-          select "United States", :from => "Country"
-          select "Alaska", :from => "order[bill_address_attributes][state_id]"
+          select country.name, :from => "Country"
+          select state.name, :from => "order[bill_address_attributes][state_id]"
           fill_in "Phone", :with => "555-555-5555"
           check "Use Billing Address"
 
@@ -169,21 +174,35 @@ describe "Checkout" do
           click_button "Save and Continue"
         end
 
-        it "informs about an invalid coupon code" do
-          fill_in "Coupon code", :with => "coupon_codes_rule_man"
-          click_button "Save and Continue"
-          page.should have_content(I18n.t(:coupon_code_not_found))
+        context "with no promotions" do
+          it "informs about an invalid coupon code" do
+            fill_in "Coupon code", :with => "coupon_codes_rule_man"
+            click_button "Save and Continue"
+            page.should have_content(I18n.t(:coupon_code_not_found))
+          end
         end
 
-        it "applies a promotion to an order" do
-          fill_in "Coupon code", :with => "onetwo"
-          click_button "Save and Continue"
-          page.should have_content(I18n.t(:coupon_code_applied))
+        context "with a promotion" do
+          before do
+            create_basic_coupon_promotion("onetwo")
+          end
+
+          it "applies a promotion to an order" do
+            fill_in "Coupon code", :with => "onetwo"
+            click_button "Save and Continue"
+            page.should have_content(I18n.t(:coupon_code_applied))
+          end
         end
       end
 
       # CheckoutController
       context "on the cart page" do
+        before do
+          visit spree.root_path
+          click_link "RoR Mug"
+          click_button "add-to-cart-button"
+        end
+
         it "can enter a coupon code and receives success notification" do
           fill_in "Coupon code", :with => "onetwo"
           click_button "Apply"
